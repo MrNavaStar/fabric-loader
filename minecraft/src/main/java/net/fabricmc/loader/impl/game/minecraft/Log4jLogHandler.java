@@ -26,9 +26,12 @@ import java.util.Map;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
 
+import net.fabricmc.loader.api.FabricLoader;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.spi.LoggerContext;
 
 import net.fabricmc.loader.api.Version;
@@ -49,6 +52,11 @@ public final class Log4jLogHandler implements LogHandler {
 	public void log(long time, LogLevel level, LogCategory category, String msg, Throwable exc, boolean fromReplay, boolean wasSuppressed) {
 		// TODO: suppress console log output if wasSuppressed is false to avoid duplicate output
 		getLogger(category).log(translateLogLevel(level), msg, exc);
+	}
+
+	public static void enabledDebug() {
+		Logger logger = LogManager.getRootLogger();
+		Configurator.setAllLevels(logger.getName(), Level.DEBUG);
 	}
 
 	private static Logger getLogger(LogCategory category) {

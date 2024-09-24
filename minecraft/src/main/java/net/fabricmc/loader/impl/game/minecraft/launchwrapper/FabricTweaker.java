@@ -34,6 +34,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
+import net.fabricmc.loader.impl.game.minecraft.Log4jLogHandler;
+
+import net.fabricmc.loader.impl.launch.knot.Knot;
+
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.Proxy;
@@ -147,6 +151,8 @@ public abstract class FabricTweaker extends FabricLauncherBase implements ITweak
 		loader.setGameProvider(provider);
 		loader.load();
 		loader.freeze();
+
+		if (loader.isDevelopmentEnvironment()) Log4jLogHandler.enabledDebug();
 
 		launchClassLoader.registerTransformer(FabricClassTransformer.class.getName());
 		FabricLoaderImpl.INSTANCE.loadAccessWideners();
